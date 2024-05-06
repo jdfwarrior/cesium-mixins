@@ -129,7 +129,7 @@ viewer.extend(controls)
 
 ![Measure](./img/measure.png "Measure")
 
-The `measure` mixin allows the user to click and measure the distance between two points on the globe
+The `measure` mixin allows the user to click and measure the distance between two points on the globe. The function call will return a Promise that resolves to an object with the `CartographicDegrees` location of each click and the measured distance in `meters`, `miles`, and `kilometers`
 
 ### Example
 
@@ -147,7 +147,7 @@ viewer.measure()
 
 ![Draw Circle](./img/drawcircle.png "Draw Circle")
 
-The `drawcircle` mixin allows the user to click to set an initial point and then move the mouse cursor and draw a circle. The radius of the circle will be shown in a ui helper at the top of the screen.
+The `drawcircle` mixin allows the user to click to set an initial point and then move the mouse cursor and draw a circle. The radius of the circle will be shown in a ui helper at the top of the screen. The function call will return a Promise that resolves to an object with the initial center point in `CartographicDegrees` and the radius of the drawn circle
 
 ### Example
 
@@ -165,7 +165,7 @@ viewer.drawcircle()
 
 ![Draw Polygon](./img/draw-polygon.png "Draw Polygon")
 
-The `drawpolygon` mixin allows the user to click a group of points that define a polygon on the globe.
+The `drawpolygon` mixin allows the user to click a group of points that define a polygon on the globe. The function call will return a Promise that resolves to an array of `CartographicDegrees` used to define the corners.
 
 ### Example
 
