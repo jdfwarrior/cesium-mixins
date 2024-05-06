@@ -1,0 +1,27 @@
+{
+  "name": "@jdfwarrior/cesium-mixins",
+  "version": "1.0.0",
+  "description": "A collection of various mixins for Cesium",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && bun build index.js -e cesium --outfile dist/index.js --target browser"
+  },
+  "keywords": [
+    "cesium",
+    "mixin"
+  ],
+  "author": "David Ferguson",
+  "license": "ISC",
+  "devDependencies": {
+    "cesium": "^1.116.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/utm": "^1.1.4",
+    "mgrs": "^2.0.0",
+    "utm": "^1.1.1"
+  }
+}
