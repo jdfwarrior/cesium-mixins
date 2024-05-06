@@ -52,3 +52,7 @@ export interface MeasureConfig {
 }
 
 export type EventHandlerCallback = ScreenSpaceEventHandler.MotionEventCallback | ScreenSpaceEventHandler.PositionedEventCallback
+
+export type MeasureResult = { origin: CartographicDegrees, destination: CartographicDegrees, meters: number, kilometers: number, miles: number }
+export type DrawPolygonResult = CartographicDegrees[]
+export type DrawCircleResult = { origin: CartographicDegrees, radius: number }

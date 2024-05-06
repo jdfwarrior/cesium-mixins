@@ -15,11 +15,11 @@ import {
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
-import { CartographicDegrees } from "./types";
+import { CartographicDegrees, DrawCircleResult } from "./types";
 
 declare module "cesium" {
   interface Viewer {
-    drawcircle: () => Promise<{ origin: CartographicDegrees; radius: number }>;
+    drawcircle: () => Promise<DrawCircleResult>;
   }
 }
 

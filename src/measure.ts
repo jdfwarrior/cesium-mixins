@@ -15,18 +15,11 @@ import {
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
-import { CartographicDegrees, MeasureConfig } from "./types";
+import { CartographicDegrees, MeasureConfig, MeasureResult } from "./types";
 
 declare module "cesium" {
   interface Viewer {
-    measure: (config?: MeasureConfig) => Promise<
-      | {
-        origin: CartographicDegrees;
-        destination: CartographicDegrees;
-        distance: number;
-      }
-      | undefined
-    >;
+    measure: (config?: MeasureConfig) => Promise<MeasureResult | undefined>;
   }
 }
 

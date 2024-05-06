@@ -14,11 +14,11 @@ import {
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
-import { CartographicDegrees } from "./types";
+import { CartographicDegrees, DrawPolygonResult } from "./types";
 
 declare module "cesium" {
   interface Viewer {
-    drawpolygon: () => Promise<CartographicDegrees[]>;
+    drawpolygon: () => Promise<DrawPolygonResult>;
   }
 }
 

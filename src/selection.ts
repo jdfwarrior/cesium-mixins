@@ -21,7 +21,7 @@ import { TemporaryEntity } from "./lib/entity";
 
 declare module "cesium" {
   interface Viewer {
-    select: () => void;
+    select: () => Promise<Entity[]>;
   }
 }
 
