@@ -111,7 +111,7 @@ viewer.extend(tooltip)
 
 ## animation controls
 
-![Animation Controls](https://github.com/jdfwarrior/cesium-mixins/blob/main/img/animation-controls.png?raw=true "Animation Controls")
+![Animation Controls](https://github.com/jdfwarrior/cesium-mixins/blob/main/img/controls.png?raw=true "Animation Controls")
 
 The `animation controls` (beta) mixin switches out the dated animation controller for something that looks a little better.
 
@@ -145,7 +145,7 @@ viewer.measure()
 
 ## draw circle
 
-![Draw Circle](https://github.com/jdfwarrior/cesium-mixins/blob/main/img/drawcircle.png?raw=true "Draw Circle")
+![Draw Circle](https://github.com/jdfwarrior/cesium-mixins/blob/main/img/draw-circle.png?raw=true "Draw Circle")
 
 The `drawcircle` mixin allows the user to click to set an initial point and then move the mouse cursor and draw a circle. The radius of the circle will be shown in a ui helper at the top of the screen. The function call will return a Promise that resolves to an object with the initial center point in `CartographicDegrees` and the radius of the drawn circle
 
