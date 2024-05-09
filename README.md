@@ -73,10 +73,7 @@ const position = await viewer.pickEntity(true) // resolves multiple entities at 
 
 ![Cursor](https://github.com/jdfwarrior/cesium-mixins/blob/main/img/cursor.png?raw=true "Cursor")
 
-The `cursor` mixin creates an additional property on the viewer instance that will emit a `CartographicDegrees` location as the user moves the mouse around the globe.
-
-You can also pass a configuration object to the mixin when initialized that will at a small block to th etop left corner of the window, showing the current mouse location
-at all times.
+The `cursor` mixin creates a helper ui tool in the top left of the canvas that will show the current cursor location in cartographic degrees. You can also click on the tool and switch the units between MGRS and UTM
 
 ### Example
 
@@ -85,12 +82,7 @@ import {cursor} from '@jdfwarrior/cesium-utils'
 import {Viewer} from 'cesium'
 
 const viewer = new Viewer('cesium')
-viewer.extend(cursor) // default use, just adds the emitter to the viewer instance
-viewer.extend(cursor, {ui: true}) // adds ui to the canvas that will display the cursor position
-
-...
-
-viewer.cursor.addEventListener(console.log) // console logs the mouse cursor position in cartographic degrees
+viewer.extend(cursor)
 ```
 
 ## tooltip
