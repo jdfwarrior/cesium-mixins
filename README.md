@@ -178,7 +178,3 @@ viewer.extend(drawpolygon)
 
 viewer.drawpolygon()
 ```
-
-## Todo
-
-- Update screenshots
