@@ -2,8 +2,8 @@ import { Viewer, ScreenSpaceEventHandler, Event } from "cesium";
 import { toCartographic } from "./lib/utils";
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
-import { fromLatLon, } from 'utm'
-import { forward } from 'mgrs'
+import { fromLatLon } from "utm";
+import { forward } from "mgrs";
 import { CartographicDegrees } from "./types";
 
 declare module "cesium" {
@@ -12,19 +12,19 @@ declare module "cesium" {
   }
 }
 
-type CoordinateUnit = 'lla' | 'mgrs' | 'utm'
+type CoordinateUnit = "lla" | "mgrs" | "utm";
 
 export default function (
   viewer: Viewer,
   options: { ui: boolean } = { ui: false }
 ) {
   const emitter = new Event();
-  const units: CoordinateUnit[] = ['lla', 'mgrs', 'utm'] as const
-  let unit: CoordinateUnit = 'lla'
-  let lastPosition: CartographicDegrees | undefined
+  const units: CoordinateUnit[] = ["lla", "mgrs", "utm"] as const;
+  let unit: CoordinateUnit = "lla";
+  let lastPosition: CartographicDegrees | undefined;
   const ele = viewer.canvas;
   const handler = new Handler(ele);
-  const helper = new Helper({
+  const helper = new Helper(viewer, {
     position: "topleft",
     icon: "cursor",
     text: "0,0",
@@ -35,17 +35,23 @@ export default function (
    * @returns {string}
    */
   function getPositionForUnit() {
-    if (!lastPosition) return '0,0'
+    if (!lastPosition) return "0,0";
 
-    let position = ''
-    if (unit === 'lla') position = `${lastPosition.latitude.toFixed(4)}, ${lastPosition.longitude.toFixed(4)}`
-    else if (unit === 'mgrs') position = forward([lastPosition.longitude, lastPosition.latitude])
-    else if (unit === 'utm') {
-      const utm = fromLatLon(lastPosition.latitude, lastPosition.longitude)
-      position = `${utm.zoneNum}${utm.zoneLetter} ${~~utm.easting} ${~~utm.northing}`
+    let position = "";
+    if (unit === "lla")
+      position = `${lastPosition.latitude.toFixed(
+        4
+      )}, ${lastPosition.longitude.toFixed(4)}`;
+    else if (unit === "mgrs")
+      position = forward([lastPosition.longitude, lastPosition.latitude]);
+    else if (unit === "utm") {
+      const utm = fromLatLon(lastPosition.latitude, lastPosition.longitude);
+      position = `${utm.zoneNum}${
+        utm.zoneLetter
+      } ${~~utm.easting} ${~~utm.northing}`;
     }
 
-    return position
+    return position;
   }
 
   /**
@@ -58,9 +64,9 @@ export default function (
 
     // @ts-ignore Type error indicates that this should be an array but its not. Example code from Cesium indicates this is correct
     emitter.raiseEvent(cartographic);
-    lastPosition = cartographic
+    lastPosition = cartographic;
 
-    const display = getPositionForUnit()
+    const display = getPositionForUnit();
     helper.update(display);
   }
 
@@ -72,16 +78,16 @@ export default function (
 
     if (helper.ele) {
       helper.ele.onclick = () => {
-        const index = units.findIndex(current => current === unit)
-        unit = units[(index + 1) % units.length]
+        const index = units.findIndex((current) => current === unit);
+        unit = units[(index + 1) % units.length];
 
-        const display = getPositionForUnit()
-        helper.update(display)
-      }
+        const display = getPositionForUnit();
+        helper.update(display);
+      };
 
-      helper.ele.title = `Click to change coordinate unit`
-      helper.ele.style.userSelect = 'none'
-      helper.ele.style.cursor = 'pointer'
+      helper.ele.title = `Click to change coordinate unit`;
+      helper.ele.style.userSelect = "none";
+      helper.ele.style.cursor = "pointer";
     }
 
     helper.show();

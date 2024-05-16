@@ -27,7 +27,7 @@ function pickLocation(viewer: Viewer) {
       reset();
     });
 
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       text: "Click to select a location or press Escape to cancel.",
       icon: "cursor-click",
     });
@@ -41,7 +41,9 @@ function pickLocation(viewer: Viewer) {
         helper.hide();
         removeEscapeListener();
       } catch {
-        console.warn(`encountered an error attempting to clean up after picklocation`)
+        console.warn(
+          `encountered an error attempting to clean up after picklocation`
+        );
       }
     }
 

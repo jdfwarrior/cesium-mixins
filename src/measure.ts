@@ -23,13 +23,13 @@ declare module "cesium" {
   }
 }
 
-function measure(viewer: Viewer, config: MeasureConfig = { unit: 'm' }) {
+function measure(viewer: Viewer, config: MeasureConfig = { unit: "m" }) {
   return new Promise((resolve) => {
     // initialization
     const ele = viewer.canvas;
     const handler = new Handler(ele);
     const positions: CartographicDegrees[] = [];
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       icon: "cursor-click",
       text: "Click to set measurement origin or press Escape to cancel",
     });
@@ -66,7 +66,9 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: 'm' }) {
         setCursor("default", viewer);
         removeEscapeListener();
       } catch {
-        console.warn(`encountered an error attempting to clean up after measure`)
+        console.warn(
+          `encountered an error attempting to clean up after measure`
+        );
       }
     }
 
@@ -104,15 +106,15 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: 'm' }) {
         entity.add();
 
         const distance = haversine(positions[0], positions[1]);
-        let converted = ''
-        let unit = config.unit
+        let converted = "";
+        let unit = config.unit;
 
-        if (unit === 'm') {
-          converted = ranges.format(distance)
-        } else if (unit === 'km') {
-          converted = ranges.format(distance / 1000)
-        } else if (unit === 'mi') {
-          converted = ranges.format(distance * 0.000621371)
+        if (unit === "m") {
+          converted = ranges.format(distance);
+        } else if (unit === "km") {
+          converted = ranges.format(distance / 1000);
+        } else if (unit === "mi") {
+          converted = ranges.format(distance * 0.000621371);
         }
 
         helper.update(
@@ -136,9 +138,9 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: 'm' }) {
 
         const [origin, destination] = positions;
         const distance = haversine(origin, destination);
-        const meters = distance
-        const kilometers = meters / 1000
-        const miles = meters * 0.000621371
+        const meters = distance;
+        const kilometers = meters / 1000;
+        const miles = meters * 0.000621371;
         resolve({ origin, destination, meters, kilometers, miles });
         reset();
       } catch {

@@ -9,12 +9,7 @@ import {
   Color,
 } from "cesium";
 
-import {
-  toCartographic,
-  isBetween,
-  onEscape,
-  setCursor,
-} from "./lib/utils";
+import { toCartographic, isBetween, onEscape, setCursor } from "./lib/utils";
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
@@ -32,7 +27,7 @@ function select(viewer: Viewer) {
     const positions: number[] = [];
     setCursor("crosshair", viewer);
 
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       icon: "cursor-square",
       text: "Click to set the starting corner of the selection or press Escape to cancel",
     });
@@ -165,7 +160,7 @@ function select(viewer: Viewer) {
         setCursor("default", viewer);
         helper.hide();
         removeEscapeListener();
-      } catch { }
+      } catch {}
     }
 
     /**

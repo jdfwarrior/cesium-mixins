@@ -7,7 +7,7 @@ export default function (viewer: Viewer) {
   const handler = new Handler(ele);
 
   // create a new tooltip, styled so that it is initially hidden and is slightly smaller than the others
-  const helper = new Helper({
+  const helper = new Helper(viewer, {
     styles: { display: "none", fontSize: "12px", lineHeight: "12px" },
   });
   helper.show();
@@ -24,7 +24,7 @@ export default function (viewer: Viewer) {
     if (!name) {
       hide();
     } else {
-      helper.show()
+      helper.show();
       const left = x + 20 + "px";
       const top = y - 25 + "px";
       helper.update(name);

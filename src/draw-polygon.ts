@@ -27,7 +27,7 @@ function drawpolygon(viewer: Viewer) {
     const ele = viewer.canvas;
     const handler = new Handler(ele);
     const positions: CartographicDegrees[] = [];
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       icon: "cursor-click",
       text: "Click points to draw a polygon or press Escape to cancel",
     });
@@ -71,7 +71,9 @@ function drawpolygon(viewer: Viewer) {
         helper.hide();
         restoreSelection();
       } catch {
-        console.warn(`encountered an error attempting to clean up after drawpolygon`)
+        console.warn(
+          `encountered an error attempting to clean up after drawpolygon`
+        );
       }
     }
 

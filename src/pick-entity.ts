@@ -21,7 +21,7 @@ function pickEntity(viewer: Viewer, multiSelect: boolean = false) {
     const ele = viewer.canvas;
     const handler = new Handler(ele);
 
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       text: "Select an entity or press Escape to cancel.",
       icon: "cursor-click",
     });
@@ -40,7 +40,9 @@ function pickEntity(viewer: Viewer, multiSelect: boolean = false) {
         helper.hide();
         removeEscapeListener();
       } catch {
-        console.warn(`encountered an error attempting to clean up after pickentity`)
+        console.warn(
+          `encountered an error attempting to clean up after pickentity`
+        );
       }
     }
 

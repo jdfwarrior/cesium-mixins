@@ -31,7 +31,7 @@ function drawcircle(viewer: Viewer) {
     const positions: CartographicDegrees[] = [];
 
     // create ui helper
-    const helper = new Helper({
+    const helper = new Helper(viewer, {
       icon: "cursor-click",
       position: "top",
       text: "Click to set the circle origin or press Escape to cancel",
@@ -85,7 +85,9 @@ function drawcircle(viewer: Viewer) {
         setCursor("default", viewer);
         removeEscapeListener();
       } catch {
-        console.warn(`encountered an error attempting to clean up after drawcircle`)
+        console.warn(
+          `encountered an error attempting to clean up after drawcircle`
+        );
       }
     }
 
