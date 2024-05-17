@@ -1,4 +1,4 @@
-import { Viewer, ScreenSpaceEventHandler, Event } from "cesium";
+import { Viewer, ScreenSpaceEventHandler } from "cesium";
 import { toCartographic } from "./lib/utils";
 import { Helper } from "./lib/helper";
 import { Handler } from "./lib/handler";
@@ -6,19 +6,16 @@ import { fromLatLon } from "utm";
 import { forward } from "mgrs";
 import { CartographicDegrees } from "./types";
 
-declare module "cesium" {
-  interface Viewer {
-    cursor: Event;
-  }
+interface CursorOptions {
+  units: boolean
 }
 
 type CoordinateUnit = "lla" | "mgrs" | "utm";
 
 export default function (
   viewer: Viewer,
-  options: { ui: boolean } = { ui: false }
+  options: CursorOptions = { units: false }
 ) {
-  const emitter = new Event();
   const units: CoordinateUnit[] = ["lla", "mgrs", "utm"] as const;
   let unit: CoordinateUnit = "lla";
   let lastPosition: CartographicDegrees | undefined;
@@ -39,16 +36,12 @@ export default function (
 
     let position = "";
     if (unit === "lla")
-      position = `${lastPosition.latitude.toFixed(
-        4
-      )}, ${lastPosition.longitude.toFixed(4)}`;
+      position = `${options.units ? 'Lat, Lon: ' : ''}${lastPosition.latitude.toFixed(4)}, ${lastPosition.longitude.toFixed(4)}`;
     else if (unit === "mgrs")
-      position = forward([lastPosition.longitude, lastPosition.latitude]);
+      position = `${options.units ? "MGRS: " : ""}${forward([lastPosition.longitude, lastPosition.latitude])}`;
     else if (unit === "utm") {
       const utm = fromLatLon(lastPosition.latitude, lastPosition.longitude);
-      position = `${utm.zoneNum}${
-        utm.zoneLetter
-      } ${~~utm.easting} ${~~utm.northing}`;
+      position = `${options.units ? "UTM: " : ""}${utm.zoneNum}${utm.zoneLetter} ${~~utm.easting} ${~~utm.northing}`;
     }
 
     return position;
@@ -62,8 +55,6 @@ export default function (
     const cartographic = toCartographic(event.endPosition, viewer);
     if (!cartographic) return;
 
-    // @ts-ignore Type error indicates that this should be an array but its not. Example code from Cesium indicates this is correct
-    emitter.raiseEvent(cartographic);
     lastPosition = cartographic;
 
     const display = getPositionForUnit();
@@ -94,8 +85,4 @@ export default function (
   }
 
   init();
-
-  Object.defineProperties(Viewer.prototype, {
-    cursor: { value: emitter },
-  });
 }
