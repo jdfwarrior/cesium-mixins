@@ -138,7 +138,7 @@ const styles = `
   color: #edffff;
   padding-left: 8px;
   padding-right: 8px;
-  font-size: 13px;
+  font-size: 12px;
   box-sizing: border-box;
 }
 
