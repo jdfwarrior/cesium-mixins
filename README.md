@@ -170,3 +170,55 @@ viewer.extend(drawpolygon)
 
 viewer.drawpolygon()
 ```
+
+## saved views
+
+Accessible via the API or using hotkeys. `Ctrl+H` will return to the designated "home" view. `Ctrl+L` will save the current camera view to the saved view collection. `Ctrl+K` will navigate to the next saved view in the collection. `Ctrl+J` will navigate to the previous saved view in the collection.
+
+### Api
+
+Available on the `Viewer` instance as `savedviews`, the `SavedViewCollection` has several functions that allow you to manage your saved views.
+
+### .add()
+
+Allows you to add the current camera view to the collection as a saved view.
+
+### .getById(id: string)
+
+Get the saved view that matches the provided id
+
+### .remove(view: SavedView)
+
+Remove the specified view from collection
+
+### .removeById(id: string)
+
+Remove the saved view with the provided id from the collection
+
+### .removeAll()
+
+Remove all saved views from the collection
+
+### .goto(view: SavedView)
+
+Fly to the specified saved view on the globe
+
+### .home()
+
+Fly to the user selected home view if set, if not, fly to the default home view.
+
+### .previousView()
+
+Fly to the previous view in the collection
+
+### .nextView()
+
+Fly to the next view in the collection
+
+### .setHome(view: SavedView)
+
+Set the provided saved view as the user selected home view
+
+### .resetHome()
+
+Reset the user selected home view
