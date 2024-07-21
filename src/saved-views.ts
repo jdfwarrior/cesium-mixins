@@ -281,6 +281,7 @@ export default function (viewer: Viewer, options: SavedViewsOptions = { showTogg
   Object.defineProperties(Viewer.prototype, {
     views: {
       value: collection,
+      writable: true
     },
   });
 }
