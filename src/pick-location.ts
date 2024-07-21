@@ -77,6 +77,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     pickLocation: {
       value: () => pickLocation(viewer),
+      writable: true
     },
   });
 }
