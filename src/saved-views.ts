@@ -74,10 +74,39 @@ class SavedViewCollection {
   active: SavedView | undefined;
   userHome: SavedView | undefined;
 
-  constructor(public viewer: Viewer) {
+  constructor(public viewer: Viewer, options: SavedViewsOptions) {
     this.registerKeyListeners();
     this.values.push(this.defaultHome);
     this.goto(this.defaultHome);
+
+    if (options.showToggle) {
+      const homeButton = document.querySelector('.cesium-home-button')
+      if (!homeButton) return
+
+      const canvas = viewer.canvas
+      const viewerEle = document.querySelector('.cesium-viewer')
+      const rect = homeButton.getBoundingClientRect()
+
+      const top = rect.bottom + 3
+      const right = canvas.clientWidth - rect.right - 1
+
+      const viewListButton = document.createElement('button')
+      viewListButton.style.position = 'fixed'
+      viewListButton.style.top = `${top}px`
+      viewListButton.style.right = `${right}px`
+      viewListButton.style.backgroundColor = `rgba(49, 51, 54, 0.8)`
+      viewListButton.style.border = `1px solid rgb(68, 68, 68)`
+      viewListButton.style.borderRadius = `6px`
+      viewListButton.style.color = `rgb(237, 255, 255)`
+      viewListButton.style.padding = `0px 8px`
+      viewListButton.style.width = `34px`
+      viewListButton.style.display = `flex`
+      viewListButton.style.justifyContent = `center`
+      viewListButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6z"/></svg>`
+      viewListButton.onclick = () => this.onToggle.raiseEvent()
+
+      viewerEle?.appendChild(viewListButton)
+    }
   }
 
   /**
@@ -242,8 +271,12 @@ class SavedViewCollection {
   }
 }
 
-export default function (viewer: Viewer) {
-  const collection = new SavedViewCollection(viewer);
+interface SavedViewsOptions {
+  showToggle: boolean
+}
+
+export default function (viewer: Viewer, options: SavedViewsOptions = { showToggle: false }) {
+  const collection = new SavedViewCollection(viewer, options);
 
   Object.defineProperties(Viewer.prototype, {
     views: {
