@@ -174,6 +174,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     drawcircle: {
       value: () => drawcircle(viewer),
+      writable: true
     },
   });
 }

@@ -160,7 +160,7 @@ function select(viewer: Viewer) {
         setCursor("default", viewer);
         helper.hide();
         removeEscapeListener();
-      } catch {}
+      } catch { }
     }
 
     /**
@@ -249,6 +249,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     select: {
       value: () => select(viewer),
+      writable: true
     },
   });
 }

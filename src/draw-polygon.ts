@@ -229,6 +229,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     drawpolygon: {
       value: () => drawpolygon(viewer),
+      writable: true
     },
   });
 }

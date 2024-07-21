@@ -77,6 +77,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     pickEntity: {
       value: (multiSelect?: boolean) => pickEntity(viewer, multiSelect),
+      writable: true
     },
   });
 }

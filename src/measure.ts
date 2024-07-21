@@ -170,6 +170,7 @@ export default function (viewer: Viewer) {
   Object.defineProperties(Viewer.prototype, {
     measure: {
       value: (config?: MeasureConfig) => measure(viewer, config),
+      writable: true
     },
   });
 }
