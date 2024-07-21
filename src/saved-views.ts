@@ -2,6 +2,12 @@ import { Event } from "cesium";
 import { Viewer, Cartesian3, Camera } from "cesium";
 import { uid } from "uid";
 
+declare module "cesium" {
+  interface Viewer {
+    views: SavedViewCollection
+  }
+}
+
 class SavedView {
   readonly id: string = uid();
   name: string = "";
@@ -154,7 +160,7 @@ class SavedViewCollection {
       const view = new SavedView(this.viewer.camera);
       this.values.push(view);
 
-      this.collectionChanged.raiseEvent();
+      this.collectionChanged.raiseEvent(this.values);
     } catch {
       throw new Error(`Error capturing camera view`);
     }
@@ -179,7 +185,7 @@ class SavedViewCollection {
     if (index < 0) return;
     this.values.splice(index, 1);
 
-    this.collectionChanged.raiseEvent();
+    this.collectionChanged.raiseEvent(this.values);
   }
 
   /**
@@ -193,7 +199,7 @@ class SavedViewCollection {
     if (!view) return;
     this.remove(view);
 
-    this.collectionChanged.raiseEvent();
+    this.collectionChanged.raiseEvent(this.values);
   }
 
   /**
@@ -202,7 +208,7 @@ class SavedViewCollection {
   removeAll() {
     this.values.length = 0;
 
-    this.collectionChanged.raiseEvent();
+    this.collectionChanged.raiseEvent(this.values);
   }
 
   /**
