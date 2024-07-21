@@ -71,6 +71,7 @@ class SavedViewCollection {
   defaultHome: SavedView = homeView;
   values: SavedView[] = [];
   collectionChanged: Event = new Event();
+  onToggle: Event = new Event()
   active: SavedView | undefined;
   userHome: SavedView | undefined;
 
