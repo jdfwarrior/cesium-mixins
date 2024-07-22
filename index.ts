@@ -8,3 +8,4 @@ export { default as measure } from "./src/measure";
 export { default as drawcircle } from "./src/draw-circle";
 export { default as drawpolygon } from "./src/draw-polygon";
 export { default as savedviews } from "./src/saved-views";
+export { default as countries } from "./src/countries";
