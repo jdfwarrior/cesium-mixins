@@ -1,6 +1,6 @@
 {
   "name": "@jdfwarrior/cesium-mixins",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A collection of various mixins for Cesium",
   "main": "dist/index.js",
   "module": "dist/index.js",
