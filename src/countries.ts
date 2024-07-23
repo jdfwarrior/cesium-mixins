@@ -3,15 +3,15 @@ import { CountriesList } from "./lib/countries-data";
 
 declare module "cesium" {
   interface Viewer {
-    countries: Countries;
+    countries: CountryLabels;
   }
 }
 
-class Countries {
+class CountryLabels {
   enabled: boolean = false;
   sourceName: string = "mixins:countries";
   onChanged: Event = new Event();
-  constructor(public viewer: Viewer) {}
+  constructor(public viewer: Viewer) { }
 
   /**
    * Returns an array of all datasources currently available within the view
@@ -97,7 +97,7 @@ class Countries {
 }
 
 export default (viewer: Viewer) => {
-  const countries = new Countries(viewer);
+  const countries = new CountryLabels(viewer);
 
   Object.defineProperties(Viewer.prototype, {
     countries: {
