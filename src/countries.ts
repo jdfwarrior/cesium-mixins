@@ -3,7 +3,9 @@ import { CountriesList } from "./lib/countries-data";
 
 declare module "cesium" {
   interface Viewer {
-    countries: CountryLabels;
+    countries: {
+      labels: CountryLabels
+    };
   }
 }
 
@@ -97,11 +99,13 @@ class CountryLabels {
 }
 
 export default (viewer: Viewer) => {
-  const countries = new CountryLabels(viewer);
+  const labels = new CountryLabels(viewer);
 
   Object.defineProperties(Viewer.prototype, {
     countries: {
-      value: countries,
+      value: {
+        labels
+      },
       writable: true,
     },
   });
