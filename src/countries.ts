@@ -1,10 +1,12 @@
 import { Viewer, CzmlDataSource, Event } from "cesium";
 import { CountriesList } from "./lib/countries-data";
+import { GeoJsonDataSource } from "cesium";
 
 declare module "cesium" {
   interface Viewer {
     countries: {
       labels: CountryLabels
+      borders: CountryBorders
     };
   }
 }
@@ -98,13 +100,34 @@ class CountryLabels {
   }
 }
 
+class CountryBorders {
+  sourceName = 'mixins:countryborders'
+  source: GeoJsonDataSource | undefined
+
+  constructor(public viewer: Viewer) {
+
+  }
+
+  show() {
+    if (!this.source) this.source = new GeoJsonDataSource(this.sourceName)
+    this.viewer.dataSources.add(this.source)
+  }
+
+  hide() {
+    if (!this.source) return
+    this.viewer.dataSources.remove(this.source)
+  }
+}
+
 export default (viewer: Viewer) => {
   const labels = new CountryLabels(viewer);
+  const borders = new CountryBorders(viewer)
 
   Object.defineProperties(Viewer.prototype, {
     countries: {
       value: {
-        labels
+        labels,
+        borders
       },
       writable: true,
     },
