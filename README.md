@@ -83,6 +83,11 @@ import {Viewer} from 'cesium'
 
 const viewer = new Viewer('cesium')
 viewer.extend(cursor)
+
+viewer.mousecursor.show()
+viewer.mousecursor.hide()
+viewer.mousecursor.units.set('mgrs')
+viewer.mousecursor.units.add('custom', (latitude, longitude) => string)
 ```
 
 ## tooltip
@@ -99,6 +104,10 @@ import {Viewer} from 'cesium'
 
 const viewer = new Viewer('cesium')
 viewer.extend(tooltip)
+
+viewer.tooltips.show()
+viewer.tooltips.hide()
+viewer.tooltips.toggle()
 ```
 
 ## animation controls
@@ -169,6 +178,28 @@ const viewer = new Viewer('cesium')
 viewer.extend(drawpolygon)
 
 viewer.drawpolygon()
+```
+
+## countries
+
+The `countries` mixin allows you to show country labels or country borders on the globe easily. Antarctica was intentionally removed from the country borders for performance reasons. Future improvements will allow you to set the outline color of the country borders and whether or not the countries are filled. You'll also be able to set background color of the country labels, whether or not they have a background, and text color.
+
+### Example
+
+```
+import {countries} from '@jdfwarrior/cesium-mixins'
+import {Viewer} from 'cesium'
+
+const viewer = new Viewer('cesium')
+viewer.extend(countries)
+
+viewer.countries.labels.show()
+viewer.countries.labels.hide()
+viewer.countries.labels.toggle()
+
+viewer.countries.borders.show()
+viewer.countries.borders.hide()
+viewer.countries.borders.toggle()
 ```
 
 ## saved views
