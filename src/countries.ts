@@ -1,4 +1,4 @@
-import { Viewer, CzmlDataSource, Event } from "cesium";
+import { Viewer, CzmlDataSource, Event, Color } from "cesium";
 import { CountriesList } from "./lib/countries.data";
 import { geo } from "./lib/countries.geo";
 import { GeoJsonDataSource } from "cesium";
@@ -6,8 +6,8 @@ import { GeoJsonDataSource } from "cesium";
 declare module "cesium" {
   interface Viewer {
     countries: {
-      labels: CountryLabels
-      borders: CountryBorders
+      labels: CountryLabels;
+      borders: CountryBorders;
     };
   }
 }
@@ -16,7 +16,7 @@ class CountryLabels {
   enabled: boolean = false;
   sourceName: string = "mixins:countries";
   onChanged: Event = new Event();
-  constructor(public viewer: Viewer) { }
+  constructor(public viewer: Viewer) {}
 
   /**
    * Returns an array of all datasources currently available within the view
@@ -102,42 +102,55 @@ class CountryLabels {
 }
 
 class CountryBorders {
-  sourceName = 'mixins:countryborders'
-  source: GeoJsonDataSource | undefined
-  visible: boolean = false
+  sourceName = "mixins:countryborders";
+  source: GeoJsonDataSource | undefined;
+  visible: boolean = false;
 
-  constructor(public viewer: Viewer) {
+  constructor(public viewer: Viewer) {}
 
-  }
-
+  /**
+   * Load country borders and show them on the globe
+   */
   show() {
-    if (!this.source) this.source = new GeoJsonDataSource(this.sourceName)
-    this.source.load(geo)
-    this.viewer.dataSources.add(this.source)
-    this.visible = true
+    if (!this.source) {
+      this.source = new GeoJsonDataSource(this.sourceName);
+      this.source.load(geo, {
+        fill: Color.YELLOW.withAlpha(0.0),
+        stroke: Color.WHITE,
+      });
+    }
+
+    this.viewer.dataSources.add(this.source);
+    this.visible = true;
   }
 
+  /**
+   * Hide country borders on the globe
+   */
   hide() {
-    if (!this.source) return
-    this.viewer.dataSources.remove(this.source)
-    this.visible = false
+    if (!this.source) return;
+    this.viewer.dataSources.remove(this.source);
+    this.visible = false;
   }
 
+  /**
+   * Toggle the country borders on the globe
+   */
   toggle() {
-    if (this.visible) this.hide()
-    else this.show()
+    if (this.visible) this.hide();
+    else this.show();
   }
 }
 
 export default (viewer: Viewer) => {
   const labels = new CountryLabels(viewer);
-  const borders = new CountryBorders(viewer)
+  const borders = new CountryBorders(viewer);
 
   Object.defineProperties(Viewer.prototype, {
     countries: {
       value: {
         labels,
-        borders
+        borders,
       },
       writable: true,
     },
