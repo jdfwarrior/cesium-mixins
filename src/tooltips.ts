@@ -4,28 +4,24 @@ import { Handler } from "./lib/handler";
 
 declare module "cesium" {
   interface Viewer {
-    tooltips: {
-      enable: () => void
-      disable: () => void
-      enabled: boolean
-    }
+    tooltips: Tooltips;
   }
 }
 
 class Tooltips {
-  ele: HTMLCanvasElement
-  handler: Handler
-  helper: Helper
-  enabled: boolean
+  ele: HTMLCanvasElement;
+  handler: Handler;
+  helper: Helper;
+  enabled: boolean;
 
   constructor(public viewer: Viewer) {
     this.ele = viewer.canvas;
     this.handler = new Handler(this.ele);
-    this.enabled = false
+    this.enabled = false;
 
     const options = {
       styles: { display: "none", fontSize: "12px", lineHeight: "12px" },
-    }
+    };
 
     // create a new tooltip, styled so that it is initially hidden and is slightly smaller than the others
     this.helper = new Helper(this.viewer, options);
@@ -34,17 +30,20 @@ class Tooltips {
   /**
    * Enable listening for mouse events and showing the tooltips
    */
-  enable() {
-    this.handler.on("mouse_move", (event: ScreenSpaceEventHandler.MotionEvent) => this.onMove(event));
-    this.enabled = true
+  show() {
+    this.handler.on(
+      "mouse_move",
+      (event: ScreenSpaceEventHandler.MotionEvent) => this.onMove(event)
+    );
+    this.enabled = true;
   }
 
   /**
    * Disable listening for mouse events and showing the tooltips
    */
-  disable() {
-    this.handler.off('mouse_move')
-    this.enabled = false
+  hide() {
+    this.handler.off("mouse_move");
+    this.enabled = false;
   }
 
   /**
@@ -52,12 +51,12 @@ class Tooltips {
    * @param entity hovered entity
    * @param at cartesian position of the cursor
    */
-  show(entity: Entity, at: Cartesian2) {
+  private render(entity: Entity, at: Cartesian2) {
     const { name } = entity;
     const { x, y } = at;
 
     if (!name) {
-      this.hide();
+      if (this.helper.isVisible()) this.helper.hide();
     } else {
       this.helper.show();
       const left = x + 20 + "px";
@@ -68,50 +67,32 @@ class Tooltips {
   }
 
   /**
-   * Hides the tooltip when no entity is hovered or the entity has no name
-   */
-  hide() {
-    if (this.helper.isVisible()) this.helper.hide();
-  }
-
-  /**
    * When the mouse moves, check to see if there are any entities under it
    * if there are, show the tooltip with the entity name
    * if not, hide the tooltip
    * @param event mouse move event
    */
-  onMove(event: ScreenSpaceEventHandler.MotionEvent) {
+  private onMove(event: ScreenSpaceEventHandler.MotionEvent) {
     const position = event.endPosition;
     const hovering = this.viewer.scene.drillPick(position);
     const [primitive] = hovering;
 
     if (primitive) {
       const entity = primitive.id;
-      this.show(entity, position);
+      this.render(entity, position);
     } else {
-      this.hide();
+      this.helper.hide();
     }
   }
-
 }
 
-interface TooltipOptions {
-  enabled: boolean
-}
-
-export default function (viewer: Viewer, options: TooltipOptions = { enabled: false }) {
-  const tooltips = new Tooltips(viewer)
-
-  if (options.enabled) tooltips.enable()
+export default function (viewer: Viewer) {
+  const tooltips = new Tooltips(viewer);
 
   Object.defineProperties(Viewer.prototype, {
     tooltips: {
-      value: {
-        enable: () => tooltips.enable(),
-        disable: () => tooltips.disable(),
-        get enabled() { return tooltips.enabled }
-      },
-      writable: true
-    }
-  })
+      value: tooltips,
+      writable: true,
+    },
+  });
 }
