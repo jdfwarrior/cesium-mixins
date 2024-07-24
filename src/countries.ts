@@ -1,5 +1,6 @@
 import { Viewer, CzmlDataSource, Event } from "cesium";
-import { CountriesList } from "./lib/countries-data";
+import { CountriesList } from "./lib/countries.data";
+import { geo } from "./lib/countries.geo";
 import { GeoJsonDataSource } from "cesium";
 
 declare module "cesium" {
@@ -56,7 +57,7 @@ class CountryLabels {
   /**
    * Load the CzmlDataSource with an array of labels to represent all countries
    */
-  showLabels() {
+  show() {
     // get or create the data source
     const source = this._getOrCreateLabelsSource();
 
@@ -89,7 +90,7 @@ class CountryLabels {
   /**
    * Remove the czml data source from the viewer
    */
-  hideLabels() {
+  hide() {
     // get the source
     const source = this._getOrCreateLabelsSource();
     // remove it from the viewer
@@ -103,6 +104,7 @@ class CountryLabels {
 class CountryBorders {
   sourceName = 'mixins:countryborders'
   source: GeoJsonDataSource | undefined
+  visible: boolean = false
 
   constructor(public viewer: Viewer) {
 
@@ -110,12 +112,20 @@ class CountryBorders {
 
   show() {
     if (!this.source) this.source = new GeoJsonDataSource(this.sourceName)
+    this.source.load(geo)
     this.viewer.dataSources.add(this.source)
+    this.visible = true
   }
 
   hide() {
     if (!this.source) return
     this.viewer.dataSources.remove(this.source)
+    this.visible = false
+  }
+
+  toggle() {
+    if (this.visible) this.hide()
+    else this.show()
   }
 }
 
