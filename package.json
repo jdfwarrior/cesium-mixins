@@ -7,7 +7,7 @@
   "types": "dist/index.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && bun build index.js -e cesium --outfile dist/index.js --target browser"
+    "build": "tsc && bun build index.js -e cesium --minify --outfile dist/index.js --target browser"
   },
   "keywords": [
     "cesium",
