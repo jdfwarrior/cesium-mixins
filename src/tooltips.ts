@@ -47,6 +47,14 @@ class Tooltips {
   }
 
   /**
+   * Toggle the state of tooltips for entities
+   */
+  toggle() {
+    if (this.enabled) this.hide();
+    else this.show();
+  }
+
+  /**
    * Shows the tooltip at the cursor location (plus an offset) for the provided entity
    * @param entity hovered entity
    * @param at cartesian position of the cursor
