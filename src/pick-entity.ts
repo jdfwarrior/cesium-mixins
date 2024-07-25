@@ -6,7 +6,7 @@ import { Handler } from "./lib/handler";
 class PickEntity {
   private viewer: Viewer;
   private ele: HTMLCanvasElement;
-  private handler: Handler;
+  private handler: Handler | undefined;
   private helper: Helper;
   private resolver: (entities: Entity[]) => void;
   private cleanup: () => void;
@@ -15,10 +15,10 @@ class PickEntity {
     this.viewer = viewer;
     this.ele = viewer.canvas;
     this.handler = new Handler(this.ele);
-    this.resolver = () => {};
+    this.resolver = () => { };
 
     this.helper = new Helper(viewer, {
-      text: "Select an entity or press Escape to cancel.",
+      text: "Select an entity (Esc to cancel)",
       icon: "cursor-click",
     });
 
@@ -31,6 +31,7 @@ class PickEntity {
   pick() {
     return new Promise((resolve) => {
       this.resolver = resolve;
+      this.handler = new Handler(this.ele);
       this.handler.on(
         "left_click",
         (event: ScreenSpaceEventHandler.PositionedEvent) => this.onClick(event)
@@ -44,7 +45,7 @@ class PickEntity {
    */
   reset() {
     try {
-      this.handler.destroy();
+      this.handler?.destroy();
       this.helper.hide();
       this.cleanup();
     } catch {

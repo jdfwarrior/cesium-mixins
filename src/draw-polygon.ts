@@ -29,7 +29,7 @@ function drawpolygon(viewer: Viewer) {
     const positions: CartographicDegrees[] = [];
     const helper = new Helper(viewer, {
       icon: "cursor-click",
-      text: "Click points to draw a polygon or press Escape to cancel",
+      text: "Click points to draw a polygon (Esc to cancel)",
     });
     const escapeHandler = onEscape(reset);
     const restoreSelection = disableSelection(viewer);

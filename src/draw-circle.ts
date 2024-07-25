@@ -34,7 +34,7 @@ function drawcircle(viewer: Viewer) {
     const helper = new Helper(viewer, {
       icon: "cursor-click",
       position: "top",
-      text: "Click to set the circle origin or press Escape to cancel",
+      text: "Click to set the circle origin (Esc to cancel)",
     });
 
     const removeEscapeListener = onEscape(reset);
@@ -130,13 +130,13 @@ function drawcircle(viewer: Viewer) {
         helper.update(
           `${ranges.format(
             distance / 1000
-          )} km (radius), click again to finish or press Escape to cancel.`
+          )} km (radius), click again to finish (Esc to cancel)`
         );
       else
         helper.update(
           `${ranges.format(
             distance
-          )} m (radius), click again to finish or press Escape to cancel.`
+          )} m (radius), click again to finish (Esc to cancel)`
         );
 
       handler.on("left_click", onFinalClick);

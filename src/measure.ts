@@ -31,7 +31,7 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: "m" }) {
     const positions: CartographicDegrees[] = [];
     const helper = new Helper(viewer, {
       icon: "cursor-click",
-      text: "Click to set measurement origin or press Escape to cancel",
+      text: "Click to set measurement origin (Esc to cancel)",
     });
     const removeEscapeListener = onEscape(reset);
 
@@ -118,7 +118,7 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: "m" }) {
         }
 
         helper.update(
-          `${converted}${unit}. Click again to finish or press Escape to cancel.`
+          `${converted}${unit}. Click again to finish (Esc to cancel)`
         );
       } catch {
         resolve(undefined);
