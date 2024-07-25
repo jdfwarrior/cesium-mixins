@@ -17,13 +17,7 @@ import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
 import { CartographicDegrees, DrawCircleResult } from "./types";
 
-declare module "cesium" {
-  interface Viewer {
-    drawcircle: () => Promise<DrawCircleResult>;
-  }
-}
-
-function drawcircle(viewer: Viewer) {
+function draw(viewer: Viewer) {
   return new Promise((resolve) => {
     const id = "drawcircle";
     const ele = viewer.canvas;
@@ -130,13 +124,13 @@ function drawcircle(viewer: Viewer) {
         helper.update(
           `${ranges.format(
             distance / 1000
-          )} km (radius), click again to finish (Esc to cancel)`
+          )} km (radius) Click again to finish (Esc to cancel)`
         );
       else
         helper.update(
           `${ranges.format(
             distance
-          )} m (radius), click again to finish (Esc to cancel)`
+          )} m (radius) Click again to finish (Esc to cancel)`
         );
 
       handler.on("left_click", onFinalClick);
@@ -171,10 +165,5 @@ function drawcircle(viewer: Viewer) {
 }
 
 export default function (viewer: Viewer) {
-  Object.defineProperties(Viewer.prototype, {
-    drawcircle: {
-      value: () => drawcircle(viewer),
-      writable: true
-    },
-  });
+  return async () => await draw(viewer)
 }

@@ -118,7 +118,7 @@ function measure(viewer: Viewer, config: MeasureConfig = { unit: "m" }) {
         }
 
         helper.update(
-          `${converted}${unit}. Click again to finish (Esc to cancel)`
+          `${converted}${unit} Click again to finish (Esc to cancel)`
         );
       } catch {
         resolve(undefined);

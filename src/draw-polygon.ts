@@ -16,13 +16,7 @@ import { Handler } from "./lib/handler";
 import { TemporaryEntity } from "./lib/entity";
 import { CartographicDegrees, DrawPolygonResult } from "./types";
 
-declare module "cesium" {
-  interface Viewer {
-    drawpolygon: () => Promise<DrawPolygonResult>;
-  }
-}
-
-function drawpolygon(viewer: Viewer) {
+function draw(viewer: Viewer) {
   return new Promise((resolve) => {
     const ele = viewer.canvas;
     const handler = new Handler(ele);
@@ -226,10 +220,5 @@ function drawpolygon(viewer: Viewer) {
 }
 
 export default function (viewer: Viewer) {
-  Object.defineProperties(Viewer.prototype, {
-    drawpolygon: {
-      value: () => drawpolygon(viewer),
-      writable: true
-    },
-  });
+  return async () => await draw(viewer)
 }
