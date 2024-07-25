@@ -1,4 +1,3 @@
-export { default as selection } from "./src/selection";
 export { default as pick } from "./src/pick";
 export { default as cursor } from "./src/cursor";
 export { default as tooltip } from "./src/tooltips";
