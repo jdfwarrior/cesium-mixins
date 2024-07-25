@@ -16,22 +16,13 @@ class CountryLabels {
   enabled: boolean = false;
   sourceName: string = "mixins:countries";
   onChanged: Event = new Event();
-  constructor(public viewer: Viewer) {}
-
-  /**
-   * Returns an array of all datasources currently available within the view
-   * @returns {DataSource[]}
-   */
-  private _getDataSoruces() {
-    const sources = [];
-    let i = 0;
-    const len = this.viewer.dataSources.length;
-    while (i < len) {
-      const source = this.viewer.dataSources.get(i);
-      sources.push(source);
-      i++;
-    }
-    return sources;
+  source: CzmlDataSource | undefined
+  constructor(public viewer: Viewer) {
+    this.viewer.selectedEntityChanged.addEventListener(() => {
+      const selected = this.viewer.selectedEntity
+      if (!selected) return
+      if (this.source?.entities.contains(selected)) this.viewer.selectedEntity = undefined
+    })
   }
 
   /**
@@ -40,17 +31,12 @@ class CountryLabels {
    * @returns {CzmlDataSource}
    */
   private _getOrCreateLabelsSource(): CzmlDataSource {
-    const sources = this._getDataSoruces();
-    const source = sources.find(
-      (s) => s.name === this.sourceName
-    ) as CzmlDataSource;
-
-    if (source) return source;
+    if (this.source) return this.source;
     else {
-      const source = new CzmlDataSource(this.sourceName);
-      source.process({ id: "document", version: "1.0" });
-      this.viewer.dataSources.add(source);
-      return source;
+      this.source = new CzmlDataSource(this.sourceName);
+      this.source.process({ id: "document", version: "1.0" });
+      this.viewer.dataSources.add(this.source);
+      return this.source;
     }
   }
 
@@ -106,7 +92,13 @@ class CountryBorders {
   source: GeoJsonDataSource | undefined;
   visible: boolean = false;
 
-  constructor(public viewer: Viewer) {}
+  constructor(public viewer: Viewer) {
+    this.viewer.selectedEntityChanged.addEventListener(() => {
+      const selected = this.viewer.selectedEntity
+      if (!selected) return
+      if (this.source?.entities.contains(selected)) this.viewer.selectedEntity = undefined
+    })
+  }
 
   /**
    * Load country borders and show them on the globe
